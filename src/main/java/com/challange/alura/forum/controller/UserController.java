@@ -12,8 +12,10 @@ import com.challange.alura.forum.domain.user.User;
 import com.challange.alura.forum.domain.user.UserRepository;
 import com.challange.alura.forum.domain.user.dto.Create;
 import com.challange.alura.forum.domain.user.dto.DataDetail;
+import com.challange.alura.forum.service.UserService;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -24,10 +26,12 @@ public class UserController {
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity create(@RequestBody Create data, UriComponentsBuilder builder) {
+	public ResponseEntity create(@RequestBody @Valid Create data, UriComponentsBuilder builder) {
 		var user = new User(data);
 		userRepository.save(user);
 		var uri = builder.path("users/{id}").buildAndExpand(user.getId()).toUri();
+		String hashCode = UserService.encoder(user.getPassword());
+		user.setPassword(hashCode);
 		return ResponseEntity.created(uri).body(new DataDetail(user));
 		
 	}
