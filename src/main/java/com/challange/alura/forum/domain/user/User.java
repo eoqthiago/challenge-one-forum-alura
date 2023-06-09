@@ -8,12 +8,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.challange.alura.forum.domain.user.dto.Create;
+import com.challange.alura.forum.domain.user.dto.UpdateUser;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -55,6 +57,10 @@ public class User implements UserDetails {
 	public String getPassword() {
 		return password;
 	}
+	
+	public Long getId() {
+		return id;
+	}
 
 	@Override
 	public boolean isAccountNonExpired() {
@@ -74,5 +80,19 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public void update(UpdateUser data) {
+		System.out.println("entrou aq");
+		if(data.name() != null) {
+			this.name = data.name();
+		}
+		if(data.email() != null) {
+			this.email = data.email();
+		}
+		if(data.password() != null) {
+			this.password = data.password();
+		}
+		System.out.println();
 	}
 }

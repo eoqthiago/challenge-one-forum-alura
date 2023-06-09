@@ -7,7 +7,9 @@ import java.util.List;
 import com.challange.alura.forum.domain.course.Course;
 import com.challange.alura.forum.domain.replies.Replies;
 import com.challange.alura.forum.domain.topic.dto.CreateTopic;
+import com.challange.alura.forum.domain.topic.dto.UpdateTopic;
 import com.challange.alura.forum.domain.user.User;
+import com.challange.alura.forum.domain.user.dto.UpdateUser;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -52,7 +54,6 @@ public class Topic {
 	}
 	
 	public Topic(CreateTopic data) {
-
 		this.title = data.title();
 		this.message = data.message();
 		this.creationDate = LocalDateTime.now();
@@ -60,6 +61,19 @@ public class Topic {
 		this.user = new User(data.author());
 		this.course = new Course(data.course());
 		
+	}
+
+	public void update(@Valid UpdateTopic data) {
+		if(data.title() != null) {
+			this.title = data.title();
+		}
+		if(data.message() != null) {
+			this.message = data.message();
+		}
+		if(data.status() != null) {
+			this.status = data.status();
+		}
+		this.creationDate = LocalDateTime.now();
 	}
 	
 	
